@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">MQTTeste</string>
+    <string name="title_light">Luz</string>
+    <string name="title_accelerometer">Acelerômetro</string>
+    <string name="title_gyroscope">Giroscópio</string>
+
+    <!-- Light view -->
+    <string name="placeholder_light">Luminosidade</string>
+
+    <!-- Accelerometer view-->
+    <string name="placeholder_accel">Aceleração</string>
+
+    <!-- Gyroscope view -->
+    <string name="placeholder_gyro">Giroscópio</string>
+</resources>
