@@ -4,11 +4,15 @@
     <string name="title_accelerometer">Acelerômetro</string>
     <string name="title_gyroscope">Giroscópio</string>
 
+    <!-- GERAL -->
+    <string name="sensor_unavailable">Sensor não disponível</string>
+
     <!-- Light view -->
     <string name="placeholder_light">Luminosidade</string>
 
     <!-- Accelerometer view-->
     <string name="placeholder_accel">Aceleração</string>
+    <string name="accel_values">Eixo Z: %1$f \n Eixo X: %2$f \n Eixo Y: %3$f</string>
 
     <!-- Gyroscope view -->
     <string name="placeholder_gyro">Giroscópio</string>

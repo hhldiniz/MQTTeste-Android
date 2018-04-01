@@ -36,18 +36,33 @@ class GyroscopeSensorViewFragment: Fragment(), SensorEventListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
-        sensorManager.registerListener(this@GyroscopeSensorViewFragment, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL)
+        try {
+            sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+            sensorManager.registerListener(this@GyroscopeSensorViewFragment, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL)
+        }catch (e: IllegalStateException)
+        {
+            gyro_value.text = getString(R.string.sensor_unavailable)
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        sensorManager.unregisterListener(this@GyroscopeSensorViewFragment)
+        try {
+            sensorManager.unregisterListener(this@GyroscopeSensorViewFragment)
+        }catch (e: RuntimeException)
+        {
+            gyro_value.text = getString(R.string.sensor_unavailable)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        sensorManager.unregisterListener(this@GyroscopeSensorViewFragment)
+        try {
+            sensorManager.unregisterListener(this@GyroscopeSensorViewFragment)
+        }catch (e: RuntimeException)
+        {
+            gyro_value.text = getString(R.string.sensor_unavailable)
+        }
     }
 }

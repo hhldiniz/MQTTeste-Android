@@ -25,7 +25,10 @@ class AccelerometerSensorViewFragment: Fragment(), SensorEventListener {
         {
             Sensor.TYPE_LINEAR_ACCELERATION->
             {
-                acceleration_value.text = p0.values[0].toString()
+                acceleration_value.text = String.format(resources.getString(R.string.accel_values),
+                        p0.values[0],
+                        p0.values[1],
+                        p0.values[2])
             }
         }
     }
@@ -36,18 +39,33 @@ class AccelerometerSensorViewFragment: Fragment(), SensorEventListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        accelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
-        sensorManager.registerListener(this@AccelerometerSensorViewFragment, accelerationSensor, SensorManager.SENSOR_DELAY_NORMAL)
+        try {
+            sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            accelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
+            sensorManager.registerListener(this@AccelerometerSensorViewFragment, accelerationSensor, SensorManager.SENSOR_DELAY_NORMAL)
+        }catch (e: IllegalStateException)
+        {
+            acceleration_value.text = resources.getString(R.string.sensor_unavailable)
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        sensorManager.unregisterListener(this@AccelerometerSensorViewFragment)
+        try {
+            sensorManager.unregisterListener(this@AccelerometerSensorViewFragment)
+        }catch (e: RuntimeException)
+        {
+            acceleration_value.text = resources.getString(R.string.sensor_unavailable)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        sensorManager.unregisterListener(this@AccelerometerSensorViewFragment)
+        try {
+            sensorManager.unregisterListener(this@AccelerometerSensorViewFragment)
+        }catch (e: RuntimeException)
+        {
+            acceleration_value.text = resources.getString(R.string.sensor_unavailable)
+        }
     }
 }

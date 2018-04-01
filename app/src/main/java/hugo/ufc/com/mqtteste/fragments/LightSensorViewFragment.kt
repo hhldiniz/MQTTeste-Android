@@ -36,18 +36,33 @@ class LightSensorViewFragment: Fragment(), SensorEventListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
-        sensorManager.registerListener(this@LightSensorViewFragment, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
+        try {
+            sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
+            sensorManager.registerListener(this@LightSensorViewFragment, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
+        }catch (e: IllegalStateException)
+        {
+            light_value.text = resources.getString(R.string.sensor_unavailable)
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        sensorManager.unregisterListener(this@LightSensorViewFragment)
+        try {
+            sensorManager.unregisterListener(this@LightSensorViewFragment)
+        }catch (e: RuntimeException)
+        {
+            light_value.text = resources.getString(R.string.sensor_unavailable)
+        }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        sensorManager.unregisterListener(this@LightSensorViewFragment)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        try {
+            sensorManager.unregisterListener(this@LightSensorViewFragment)
+        }catch (e: RuntimeException)
+        {
+            light_value.text = resources.getString(R.string.sensor_unavailable)
+        }
     }
 }
