@@ -1,4 +1,4 @@
-package hugo.ufc.com.mqtteste
+package hugo.ufc.com.mqtteste.fragments
 
 import android.app.Fragment
 import android.content.Context
@@ -10,11 +10,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.light_sensor_view_layout.*
+import hugo.ufc.com.mqtteste.R
+import kotlinx.android.synthetic.main.gyro_sensor_view_layout.*
 
-class LightSensorViewFragment: Fragment(), SensorEventListener {
+class GyroscopeSensorViewFragment: Fragment(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
-    private lateinit var lightSensor: Sensor
+    private lateinit var gyroscopeSensor: Sensor
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
 
     }
@@ -22,31 +23,31 @@ class LightSensorViewFragment: Fragment(), SensorEventListener {
     override fun onSensorChanged(p0: SensorEvent?) {
         when(p0?.sensor?.type)
         {
-            Sensor.TYPE_LIGHT->
+            Sensor.TYPE_GYROSCOPE->
             {
-                light_value.text = p0.values[0].toString()
+                gyro_value.text = p0.values[0].toString()
             }
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater!!.inflate(R.layout.light_sensor_view_layout, container, false)
+        return inflater!!.inflate(R.layout.gyro_sensor_view_layout, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
-        sensorManager.registerListener(this@LightSensorViewFragment, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
+        gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+        sensorManager.registerListener(this@GyroscopeSensorViewFragment, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL)
     }
 
     override fun onPause() {
         super.onPause()
-        sensorManager.unregisterListener(this@LightSensorViewFragment)
+        sensorManager.unregisterListener(this@GyroscopeSensorViewFragment)
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        sensorManager.unregisterListener(this@LightSensorViewFragment)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        sensorManager.unregisterListener(this@GyroscopeSensorViewFragment)
     }
 }

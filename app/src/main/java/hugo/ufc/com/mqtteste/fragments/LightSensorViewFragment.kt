@@ -1,4 +1,4 @@
-package hugo.ufc.com.mqtteste
+package hugo.ufc.com.mqtteste.fragments
 
 import android.app.Fragment
 import android.content.Context
@@ -10,11 +10,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.accelerometer_sensor_view_layout.*
+import hugo.ufc.com.mqtteste.R
+import kotlinx.android.synthetic.main.light_sensor_view_layout.*
 
-class AccelerometerSensorViewFragment: Fragment(), SensorEventListener {
+class LightSensorViewFragment: Fragment(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
-    private lateinit var accelerationSensor: Sensor
+    private lateinit var lightSensor: Sensor
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
 
     }
@@ -22,31 +23,31 @@ class AccelerometerSensorViewFragment: Fragment(), SensorEventListener {
     override fun onSensorChanged(p0: SensorEvent?) {
         when(p0?.sensor?.type)
         {
-            Sensor.TYPE_LINEAR_ACCELERATION->
+            Sensor.TYPE_LIGHT->
             {
-                acceleration_value.text = p0.values[0].toString()
+                light_value.text = p0.values[0].toString()
             }
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater!!.inflate(R.layout.accelerometer_sensor_view_layout, container, false)
+        return inflater!!.inflate(R.layout.light_sensor_view_layout, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        accelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
-        sensorManager.registerListener(this@AccelerometerSensorViewFragment, accelerationSensor, SensorManager.SENSOR_DELAY_NORMAL)
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
+        sensorManager.registerListener(this@LightSensorViewFragment, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
     }
 
     override fun onPause() {
         super.onPause()
-        sensorManager.unregisterListener(this@AccelerometerSensorViewFragment)
+        sensorManager.unregisterListener(this@LightSensorViewFragment)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        sensorManager.unregisterListener(this@AccelerometerSensorViewFragment)
+    override fun onDetach() {
+        super.onDetach()
+        sensorManager.unregisterListener(this@LightSensorViewFragment)
     }
 }

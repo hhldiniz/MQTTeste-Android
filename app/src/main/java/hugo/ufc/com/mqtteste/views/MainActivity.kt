@@ -1,8 +1,12 @@
-package hugo.ufc.com.mqtteste
+package hugo.ufc.com.mqtteste.views
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import hugo.ufc.com.mqtteste.R
+import hugo.ufc.com.mqtteste.fragments.AccelerometerSensorViewFragment
+import hugo.ufc.com.mqtteste.fragments.GyroscopeSensorViewFragment
+import hugo.ufc.com.mqtteste.fragments.LightSensorViewFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
