@@ -16,4 +16,6 @@
 
     <!-- Gyroscope view -->
     <string name="placeholder_gyro">Giroscópio</string>
+
+    <string name="mqtt_msg_arrived">Mensagem de %1$s: %2$s</string>
 </resources>
