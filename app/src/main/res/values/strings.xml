@@ -17,5 +17,8 @@
     <!-- Gyroscope view -->
     <string name="placeholder_gyro">Giroscópio</string>
 
+    <!-- MQTT -->
     <string name="mqtt_msg_arrived">Mensagem de %1$s: %2$s</string>
+    <string name="connection_success_msg">Conexão Estabelecida</string>
+    <string name="connection_error_msg">Conexão Falhou</string>
 </resources>
