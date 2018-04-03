@@ -52,7 +52,9 @@ class AccelerometerSensorViewFragment: Fragment(), SensorEventListener {
         super.onActivityCreated(savedInstanceState)
         try {
             mqtt = MQTT(activity.applicationContext, "sensor/accel", "AndroidClient")
-            mqtt.setMqttClient("tcp://iot.eclipse.org:1883")
+            mqtt.setMqttClient("tcp://m11.cloudmqtt.com:18446")
+            options.userName = "yhdytvpm"
+            options.password = "2nMy0rfV-hKE".toCharArray()
             mqtt.connect(options)
             sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
             accelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)

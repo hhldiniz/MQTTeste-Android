@@ -46,7 +46,9 @@ class GyroscopeSensorViewFragment: Fragment(), SensorEventListener {
         super.onActivityCreated(savedInstanceState)
         try {
             mqtt = MQTT(activity.applicationContext, "sensor/gyroscope", "AndroidClient")
-            mqtt.setMqttClient("tcp://iot.eclipse.org:1883")
+            mqtt.setMqttClient("tcp://m11.cloudmqtt.com:18446")
+            options.userName = "yhdytvpm"
+            options.password = "2nMy0rfV-hKE".toCharArray()
             mqtt.connect(options)
             sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
             gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
