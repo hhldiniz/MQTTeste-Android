@@ -7,12 +7,9 @@ import hugo.ufc.com.mqtteste.R
 import hugo.ufc.com.mqtteste.fragments.AccelerometerSensorViewFragment
 import hugo.ufc.com.mqtteste.fragments.GyroscopeSensorViewFragment
 import hugo.ufc.com.mqtteste.fragments.LightSensorViewFragment
-import hugo.ufc.com.mqtteste.utils.MQTT
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var mqtt: MQTT
-    private var topic = "sensor/light"
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         val transaction = fragmentManager.beginTransaction()
         when (item.itemId) {
@@ -39,8 +36,5 @@ class MainActivity : AppCompatActivity() {
         transaction.add(R.id.container, LightSensorViewFragment())
         transaction.commit()
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-//        val mqttConnectOptions = MqttConnectOptions()
-//        mqtt = MQTT
-//        mqtt.connect(mqttConnectOptions)
     }
 }

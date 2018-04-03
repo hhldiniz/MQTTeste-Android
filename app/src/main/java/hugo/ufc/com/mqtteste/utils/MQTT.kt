@@ -1,23 +1,19 @@
 package hugo.ufc.com.mqtteste.utils
 
+import android.content.Context
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
 
-object MQTT: MqttCallback, IMqttActionListener {
+class MQTT(c: Context, private val topic: String, clientId: String): MqttCallback, IMqttActionListener {
     private lateinit var mqttAndroidClient : MqttAndroidClient
-    private val clientId : String = "mqtt android client"
     private var lastSensorMsg = MqttMessage()
-    private var topic = ""
 
-    val setMqttClient = {
-        mqttAndroidClient = MqttAndroidClient(this@MQTT,"tcp://iot.eclipse.org:1883",clientId)
+    val setMqttClient = {uri: String->
+        mqttAndroidClient = MqttAndroidClient(c,uri,clientId)
         mqttAndroidClient.setCallback(this@MQTT)
     }
 
-    val setTopic = {newTopic: String->
-        topic = newTopic
-    }
-    override fun messageArrived(topic: String?, message: MqttMessage?) {
+    override fun messageArrived(topic: String?, message: MqttMessage) {
 
     }
 
@@ -37,12 +33,15 @@ object MQTT: MqttCallback, IMqttActionListener {
 
     }
 
-    val setLastSensorMsg = { msg: String ->
-        lastSensorMsg.payload = msg.toByteArray()
+    val setLastSensorMsg = { msg: MqttMessage ->
+        lastSensorMsg = msg
     }
 
     val connect = { mqttOptions: MqttConnectOptions ->
         mqttAndroidClient.connect(mqttOptions,null, this)
+    }
+
+    val publishMsg = { message: MqttMessage->
         mqttAndroidClient.publish(topic, lastSensorMsg)
     }
 }

@@ -11,11 +11,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import hugo.ufc.com.mqtteste.R
+import hugo.ufc.com.mqtteste.utils.MQTT
 import kotlinx.android.synthetic.main.light_sensor_view_layout.*
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions
+import org.eclipse.paho.client.mqttv3.MqttMessage
 
 class LightSensorViewFragment: Fragment(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private lateinit var lightSensor: Sensor
+    private val options = MqttConnectOptions()
+    private val mqtt = MQTT(activity.applicationContext, "sensor/light", "AndroidClient")
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
 
     }
@@ -26,6 +31,9 @@ class LightSensorViewFragment: Fragment(), SensorEventListener {
             Sensor.TYPE_LIGHT->
             {
                 light_value.text = p0.values[0].toString()
+                val msg = MqttMessage()
+                msg.payload = p0.values[0].toString().toByteArray()
+                mqtt.publishMsg(msg)
             }
         }
     }
@@ -37,6 +45,7 @@ class LightSensorViewFragment: Fragment(), SensorEventListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         try {
+            mqtt.connect(options)
             sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
             lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
             sensorManager.registerListener(this@LightSensorViewFragment, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
