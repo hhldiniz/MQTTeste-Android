@@ -6,6 +6,8 @@
 
     <!-- GERAL -->
     <string name="sensor_unavailable">Sensor não disponível</string>
+    <string name="mqtt_connected">MQTT Server Conectado</string>
+    <string name="mqtt_connection_error">Não foi possível conectar-se ao MQTT Server</string>
 
     <!-- Light view -->
     <string name="placeholder_light">Luminosidade</string>

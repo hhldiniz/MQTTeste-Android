@@ -11,11 +11,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import hugo.ufc.com.mqtteste.R
+import hugo.ufc.com.mqtteste.utils.MQTT
 import kotlinx.android.synthetic.main.gyro_sensor_view_layout.*
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions
+import org.eclipse.paho.client.mqttv3.MqttMessage
 
 class GyroscopeSensorViewFragment: Fragment(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private lateinit var gyroscopeSensor: Sensor
+    private val options = MqttConnectOptions()
+    private lateinit var mqtt : MQTT
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
 
     }
@@ -26,6 +31,9 @@ class GyroscopeSensorViewFragment: Fragment(), SensorEventListener {
             Sensor.TYPE_GYROSCOPE->
             {
                 gyro_value.text = p0.values[0].toString()
+                val msg = MqttMessage()
+                msg.payload = p0.values[0].toString().toByteArray()
+                mqtt.publishMsg(msg)
             }
         }
     }
@@ -37,6 +45,9 @@ class GyroscopeSensorViewFragment: Fragment(), SensorEventListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         try {
+            mqtt = MQTT(activity.applicationContext, "sensor/gyroscope", "AndroidClient")
+            mqtt.setMqttClient("tcp://iot.eclipse.org:1883")
+            mqtt.connect(options)
             sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
             gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
             sensorManager.registerListener(this@GyroscopeSensorViewFragment, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL)

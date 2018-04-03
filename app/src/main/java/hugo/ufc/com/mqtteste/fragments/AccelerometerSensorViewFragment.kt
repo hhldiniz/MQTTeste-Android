@@ -11,11 +11,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import hugo.ufc.com.mqtteste.R
+import hugo.ufc.com.mqtteste.utils.MQTT
 import kotlinx.android.synthetic.main.accelerometer_sensor_view_layout.*
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions
+import org.eclipse.paho.client.mqttv3.MqttMessage
 
 class AccelerometerSensorViewFragment: Fragment(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private lateinit var accelerationSensor: Sensor
+    private val options = MqttConnectOptions()
+    private lateinit var mqtt :MQTT
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
 
     }
@@ -29,6 +34,12 @@ class AccelerometerSensorViewFragment: Fragment(), SensorEventListener {
                         p0.values[0],
                         p0.values[1],
                         p0.values[2])
+                val msg = MqttMessage()
+                msg.payload =String.format(resources.getString(R.string.accel_values),
+                        p0.values[0],
+                        p0.values[1],
+                        p0.values[2]).toByteArray()
+                mqtt.publishMsg(msg)
             }
         }
     }
@@ -40,6 +51,9 @@ class AccelerometerSensorViewFragment: Fragment(), SensorEventListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         try {
+            mqtt = MQTT(activity.applicationContext, "sensor/accel", "AndroidClient")
+            mqtt.setMqttClient("tcp://iot.eclipse.org:1883")
+            mqtt.connect(options)
             sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
             accelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
             sensorManager.registerListener(this@AccelerometerSensorViewFragment, accelerationSensor, SensorManager.SENSOR_DELAY_NORMAL)

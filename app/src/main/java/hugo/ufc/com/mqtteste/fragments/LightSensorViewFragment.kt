@@ -20,7 +20,7 @@ class LightSensorViewFragment: Fragment(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private lateinit var lightSensor: Sensor
     private val options = MqttConnectOptions()
-    private val mqtt = MQTT(activity.applicationContext, "sensor/light", "AndroidClient")
+    private lateinit var mqtt :MQTT
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
 
     }
@@ -45,6 +45,8 @@ class LightSensorViewFragment: Fragment(), SensorEventListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         try {
+            mqtt = MQTT(activity.applicationContext, "sensor/light", "AndroidClient")
+            mqtt.setMqttClient("tcp://iot.eclipse.org:1883")
             mqtt.connect(options)
             sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
             lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
