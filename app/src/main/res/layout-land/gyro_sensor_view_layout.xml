@@ -10,10 +10,12 @@
         android:id="@+id/imageView3"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="44dp"
-        android:layout_marginTop="26dp"
-        app:layout_constraintBottom_toTopOf="@+id/gyro_value"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="55dp"
+        android:layout_marginEnd="138dp"
+        android:layout_marginStart="61dp"
+        android:layout_marginTop="55dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/gyro_value"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_3d_rotation_black_24dp" />
@@ -22,11 +24,11 @@
         android:id="@+id/gyro_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="42dp"
+        android:layout_marginEnd="102dp"
         android:text="@string/placeholder_gyro"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
