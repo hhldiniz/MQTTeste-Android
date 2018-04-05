@@ -15,5 +15,9 @@
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/ic_3d_rotation_black_24dp"
         android:title="@string/title_gyroscope" />
+    <item
+        android:id="@+id/navigation_config"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="@string/title_config" />
 
 </menu>

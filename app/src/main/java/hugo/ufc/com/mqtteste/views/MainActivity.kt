@@ -6,6 +6,7 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import hugo.ufc.com.mqtteste.R
 import hugo.ufc.com.mqtteste.fragments.AccelerometerSensorViewFragment
+import hugo.ufc.com.mqtteste.fragments.ConfigViewFragment
 import hugo.ufc.com.mqtteste.fragments.GyroscopeSensorViewFragment
 import hugo.ufc.com.mqtteste.fragments.LightSensorViewFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -27,6 +28,12 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.navigation_notifications -> {
                 lastFragment = GyroscopeSensorViewFragment()
+                transaction.replace(R.id.container, lastFragment).commit()
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_config->
+            {
+                lastFragment = ConfigViewFragment()
                 transaction.replace(R.id.container, lastFragment).commit()
                 return@OnNavigationItemSelectedListener true
             }
@@ -62,6 +69,10 @@ class MainActivity : AppCompatActivity() {
             is GyroscopeSensorViewFragment->
             {
                 navigation.selectedItemId = R.id.navigation_notifications
+            }
+            is ConfigViewFragment->
+            {
+                navigation.selectedItemId = R.id.navigation_config
             }
         }
     }

@@ -3,6 +3,7 @@
     <string name="title_light">Luz</string>
     <string name="title_accelerometer">Acelerômetro</string>
     <string name="title_gyroscope">Giroscópio</string>
+    <string name="title_config">Configurações</string>
 
     <!-- GERAL -->
     <string name="sensor_unavailable">Sensor não disponível</string>
@@ -18,6 +19,11 @@
 
     <!-- Gyroscope view -->
     <string name="placeholder_gyro">Giroscópio</string>
+
+    <!-- Config view-->
+    <string name="mqtt_server_address">Ip do Servidor MQTT</string>
+    <string name="mqtt_server_port">Porta do Servidor MQTT</string>
+    <string name="save_cfg_btn_txt">Salvar</string>
 
     <!-- MQTT -->
     <string name="mqtt_msg_arrived">Mensagem de %1$s: %2$s</string>
