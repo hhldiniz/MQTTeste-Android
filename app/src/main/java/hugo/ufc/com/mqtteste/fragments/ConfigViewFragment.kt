@@ -1,6 +1,7 @@
 package hugo.ufc.com.mqtteste.fragments
 
 import android.app.Fragment
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +19,15 @@ class ConfigViewFragment: Fragment(), View.OnClickListener {
         {
             R.id.save_cfg_btn->
             {
-
+                val username = user.text.toString()
+                val password = pass.text.toString()
+                val server = mqtt_server.text.toString()
+                val port = mqtt_port.text.toString()
+                editor.putString("username",username)
+                editor.putString("password",password)
+                editor.putString("server",server)
+                editor.putString("port", port)
+                editor.apply()
             }
         }
     }
@@ -30,6 +39,9 @@ class ConfigViewFragment: Fragment(), View.OnClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         save_cfg_btn.setOnClickListener(this)
-        activity as MainActivity
+        val mainActivity = activity as MainActivity
+        preferences = mainActivity.getSharedPreferences("config",Context.MODE_PRIVATE)
+        editor = preferences.edit()
+        editor.apply()
     }
 }

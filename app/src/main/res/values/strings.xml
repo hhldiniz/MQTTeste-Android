@@ -23,6 +23,8 @@
     <!-- Config view-->
     <string name="mqtt_server_address">Ip do Servidor MQTT</string>
     <string name="mqtt_server_port">Porta do Servidor MQTT</string>
+    <string name="user">Usuário</string>
+    <string name="password">Senha</string>
     <string name="save_cfg_btn_txt">Salvar</string>
 
     <!-- MQTT -->
