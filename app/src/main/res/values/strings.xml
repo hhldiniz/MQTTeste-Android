@@ -25,6 +25,8 @@
     <string name="mqtt_server_port">Porta do Servidor MQTT</string>
     <string name="user">Usuário</string>
     <string name="password">Senha</string>
+    <string name="radiobutton_mqtt">MQTT</string>
+    <string name="radiobutton_client_servidor">Cliente x Servidor</string>
     <string name="save_cfg_btn_txt">Salvar</string>
 
     <!-- MQTT -->
