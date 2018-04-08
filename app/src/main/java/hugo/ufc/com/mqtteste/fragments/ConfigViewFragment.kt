@@ -4,6 +4,7 @@ import android.app.Fragment
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,11 +24,35 @@ class ConfigViewFragment: Fragment(), View.OnClickListener {
                 val password = pass.text.toString()
                 val server = mqtt_server.text.toString()
                 val port = mqtt_port.text.toString()
+                val conMethod = connection_method.checkedRadioButtonId
                 editor.putString("username",username)
                 editor.putString("password",password)
                 editor.putString("server",server)
                 editor.putString("port", port)
+                editor.putInt("connection_method", conMethod)
                 editor.apply()
+                Snackbar.make(config_fragment_root, R.string.save_conf_msg, Snackbar.LENGTH_SHORT).show()
+            }
+            R.id.reset_values_btn->
+            {
+                val conMethod = connection_method.checkedRadioButtonId
+                when(conMethod)
+                {
+                    R.id.radio_mqtt->
+                    {
+                        user.setText(R.string.default_mqtt_username)
+                        pass.setText(R.string.default_mqtt_password)
+                        mqtt_server.setText(R.string.default_mqtt_server)
+                        mqtt_port.setText(R.string.default_mqtt_port)
+                    }
+                    R.id.radio_client_server->
+                    {
+                        user.setText(R.string.default_client_server_username)
+                        pass.setText(R.string.default_client_server_password)
+                        mqtt_server.setText(R.string.default_client_server_server)
+                        mqtt_port.setText(R.string.default_client_server_port)
+                    }
+                }
             }
         }
     }

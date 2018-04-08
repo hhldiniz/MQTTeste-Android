@@ -27,7 +27,17 @@
     <string name="password">Senha</string>
     <string name="radiobutton_mqtt">MQTT</string>
     <string name="radiobutton_client_servidor">Cliente x Servidor</string>
+    <string name="default_mqtt_server">tcp://m11.cloudmqtt.com</string>
+    <string name="default_mqtt_port">18446</string>
+    <string name="default_mqtt_username">yhdytvpm</string>
+    <string name="default_mqtt_password">2nMy0rfV-hKE</string>
+    <string name="default_client_server_server">localhost</string>
+    <string name="default_client_server_port">8080</string>
+    <string name="default_client_server_username">root</string>
+    <string name="default_client_server_password">root</string>
+    <string name="reset_btn_txt">Restaurar Padrões</string>
     <string name="save_cfg_btn_txt">Salvar</string>
+    <string name="save_conf_msg">Configurações Salvas</string>
 
     <!-- MQTT -->
     <string name="mqtt_msg_arrived">Mensagem de %1$s: %2$s</string>

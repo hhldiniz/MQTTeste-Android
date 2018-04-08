@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/config_fragment_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:layout_editor_absoluteY="81dp">
@@ -21,7 +22,8 @@
             android:id="@+id/mqtt_server"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/mqtt_server_address" />
+            android:hint="@string/mqtt_server_address"
+            android:text="@string/default_mqtt_server" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -39,7 +41,8 @@
             android:id="@+id/mqtt_port"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/mqtt_server_port" />
+            android:hint="@string/mqtt_server_port"
+            android:text="@string/default_mqtt_port" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -57,7 +60,8 @@
             android:id="@+id/user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/user" />
+            android:hint="@string/user"
+            android:text="@string/default_mqtt_username" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -75,7 +79,8 @@
             android:id="@+id/pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password" />
+            android:hint="@string/password"
+            android:text="@string/default_mqtt_password" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
@@ -94,22 +99,32 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="27dp"
-        android:checkedButton="@+id/radioButton"
+        android:checkedButton="@+id/radio_mqtt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/radio_mqtt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/radiobutton_mqtt" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/radio_client_server"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/radiobutton_client_servidor" />
     </RadioGroup>
+
+    <Button
+        android:id="@+id/reset_values_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="27dp"
+        android:text="@string/reset_btn_txt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout4" />
 </android.support.constraint.ConstraintLayout>
