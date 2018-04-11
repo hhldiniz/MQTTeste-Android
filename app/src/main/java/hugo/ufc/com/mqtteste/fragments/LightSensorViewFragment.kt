@@ -10,17 +10,45 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import hugo.ufc.com.mqtteste.R
+import hugo.ufc.com.mqtteste.interfaces.SensorFragment
+import hugo.ufc.com.mqtteste.utils.CommonSharedPreferences
 import hugo.ufc.com.mqtteste.utils.MQTT
+import hugo.ufc.com.mqtteste.utils.ServerConnection
 import kotlinx.android.synthetic.main.light_sensor_view_layout.*
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
 import org.eclipse.paho.client.mqttv3.MqttMessage
+import java.net.URL
 
-class LightSensorViewFragment: Fragment(), SensorEventListener {
+class LightSensorViewFragment: Fragment(), SensorEventListener, SensorFragment {
+    override fun startConfigs() {
+        prefs.putString("username",resources.getString(R.string.default_mqtt_username))
+        prefs.putString("password",resources.getString(R.string.default_mqtt_password))
+        prefs.putString("port", resources.getString(R.string.default_mqtt_port))
+        prefs.putString("server", resources.getString(R.string.default_mqtt_server))
+        prefs.putInt("connection_method", R.id.radio_mqtt)
+    }
+
+    override fun startMqtt() {
+        mqtt = MQTT(activity.applicationContext, "sensor/light", "AndroidClient")
+        mqtt.setMqttClient("tcp://${prefs.getString("server")}:${prefs.getString("port")}")
+        options.userName = prefs.getString("username")
+        options.password = prefs.getString("password").toCharArray()
+        mqtt.connect(options)
+    }
+
+    override fun startClientServer() {
+        val url = URL("http://${prefs.getString("server")}")
+        tcpServer = ServerConnection(url,prefs.getString("username"),prefs.getString("password"))
+    }
+
     private lateinit var sensorManager: SensorManager
     private lateinit var lightSensor: Sensor
     private val options = MqttConnectOptions()
     private lateinit var mqtt :MQTT
+    private lateinit var prefs: CommonSharedPreferences
+    private lateinit var tcpServer: ServerConnection
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
 
     }
@@ -33,7 +61,12 @@ class LightSensorViewFragment: Fragment(), SensorEventListener {
                 light_value.text = p0.values[0].toString()
                 val msg = MqttMessage()
                 msg.payload = p0.values[0].toString().toByteArray()
-                mqtt.publishMsg(msg)
+                try {
+                    mqtt.publishMsg(msg)
+                }catch (e: UninitializedPropertyAccessException)
+                {
+                    Toast.makeText(activity.baseContext, R.string.server_loading, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -44,12 +77,14 @@ class LightSensorViewFragment: Fragment(), SensorEventListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        prefs = CommonSharedPreferences(activity)
         try {
-            mqtt = MQTT(activity.applicationContext, "sensor/light", "AndroidClient")
-            mqtt.setMqttClient("tcp://m11.cloudmqtt.com:18446")
-            options.userName = "yhdytvpm"
-            options.password = "2nMy0rfV-hKE".toCharArray()
-            mqtt.connect(options)
+            if(prefs.getInt("connection_method") == 0)
+                startConfigs()
+            if(prefs.getInt("connection_method") == R.id.radio_mqtt)
+                startMqtt()
+            else
+                startClientServer()
             sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
             lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
             sensorManager.registerListener(this@LightSensorViewFragment, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)

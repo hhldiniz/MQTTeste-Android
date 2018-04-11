@@ -11,4 +11,17 @@ class CommonSharedPreferences(c: Context) {
         editor.putString(key, value)
         editor.commit()
     }
+
+    val putInt = {key: String, value: Int->
+        editor.putInt(key, value)
+        editor.commit()
+    }
+
+    val getString = {key: String->
+        sharedPreferences.getString(key, "")
+    }
+
+    val getInt = { key: String->
+        sharedPreferences.getInt(key, 0)
+    }
 }

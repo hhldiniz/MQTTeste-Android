@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import hugo.ufc.com.mqtteste.R
 import hugo.ufc.com.mqtteste.views.MainActivity
 import kotlinx.android.synthetic.main.config_fragment_view_layout.*
@@ -16,9 +17,9 @@ class ConfigViewFragment: Fragment(), View.OnClickListener {
     private lateinit var preferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
     override fun onClick(p0: View?) {
-        when(p0?.id)
+        when(p0)
         {
-            R.id.save_cfg_btn->
+            save_cfg_btn->
             {
                 val username = user.text.toString()
                 val password = pass.text.toString()
@@ -33,8 +34,9 @@ class ConfigViewFragment: Fragment(), View.OnClickListener {
                 editor.apply()
                 Snackbar.make(config_fragment_root, R.string.save_conf_msg, Snackbar.LENGTH_SHORT).show()
             }
-            R.id.reset_values_btn->
+            reset_values_btn->
             {
+                Toast.makeText(activity.baseContext, "clicou", Toast.LENGTH_SHORT).show()
                 val conMethod = connection_method.checkedRadioButtonId
                 when(conMethod)
                 {
@@ -52,6 +54,8 @@ class ConfigViewFragment: Fragment(), View.OnClickListener {
                         mqtt_server.setText(R.string.default_client_server_server)
                         mqtt_port.setText(R.string.default_client_server_port)
                     }
+                    else->
+                            Toast.makeText(activity.baseContext, "WUT?", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -64,6 +68,7 @@ class ConfigViewFragment: Fragment(), View.OnClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         save_cfg_btn.setOnClickListener(this)
+        reset_values_btn.setOnClickListener(this)
         val mainActivity = activity as MainActivity
         preferences = mainActivity.getSharedPreferences("config",Context.MODE_PRIVATE)
         editor = preferences.edit()
