@@ -1,14 +1,14 @@
 package hugo.ufc.com.mqtteste.fragments
 
-import android.app.Fragment
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.design.widget.Snackbar
+import com.google.android.material.snackbar.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import hugo.ufc.com.mqtteste.R
 import hugo.ufc.com.mqtteste.views.MainActivity
 import kotlinx.android.synthetic.main.config_fragment_view_layout.*
@@ -36,9 +36,8 @@ class ConfigViewFragment: Fragment(), View.OnClickListener {
             }
             reset_values_btn->
             {
-                Toast.makeText(activity.baseContext, "clicou", Toast.LENGTH_SHORT).show()
-                val conMethod = connection_method.checkedRadioButtonId
-                when(conMethod)
+                Toast.makeText(activity?.baseContext, "clicou", Toast.LENGTH_SHORT).show()
+                when(connection_method.checkedRadioButtonId)
                 {
                     R.id.radio_mqtt->
                     {
@@ -55,14 +54,14 @@ class ConfigViewFragment: Fragment(), View.OnClickListener {
                         mqtt_port.setText(R.string.default_client_server_port)
                     }
                     else->
-                            Toast.makeText(activity.baseContext, "WUT?", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(activity?.baseContext, "WUT?", Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater!!.inflate(R.layout.config_fragment_view_layout, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return inflater.inflate(R.layout.config_fragment_view_layout, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

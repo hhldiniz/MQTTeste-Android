@@ -1,9 +1,9 @@
 package hugo.ufc.com.mqtteste.views
 
-import android.app.Fragment
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v7.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import hugo.ufc.com.mqtteste.R
 import hugo.ufc.com.mqtteste.fragments.AccelerometerSensorViewFragment
 import hugo.ufc.com.mqtteste.fragments.ConfigViewFragment
@@ -14,27 +14,27 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     private var lastFragment: Fragment? = null
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        val transaction = fragmentManager.beginTransaction()
+        val transaction = supportFragmentManager.beginTransaction()
         when (item.itemId) {
             R.id.navigation_home -> {
                 lastFragment = LightSensorViewFragment()
-                transaction.replace(R.id.container, lastFragment).commit()
+                transaction.replace(R.id.container, lastFragment!!).commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
                 lastFragment = AccelerometerSensorViewFragment()
-                transaction.replace(R.id.container, lastFragment).commit()
+                transaction.replace(R.id.container, lastFragment!!).commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
                 lastFragment = GyroscopeSensorViewFragment()
-                transaction.replace(R.id.container, lastFragment).commit()
+                transaction.replace(R.id.container, lastFragment!!).commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_config->
             {
                 lastFragment = ConfigViewFragment()
-                transaction.replace(R.id.container, lastFragment).commit()
+                transaction.replace(R.id.container, lastFragment!!).commit()
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -44,12 +44,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val transaction = fragmentManager.beginTransaction()
+        val transaction = supportFragmentManager.beginTransaction()
         if(lastFragment == null) {
             lastFragment = LightSensorViewFragment()
-            transaction.add(R.id.container, lastFragment)
+            transaction.add(R.id.container, lastFragment!!)
         }else
-            transaction.replace(R.id.container, lastFragment)
+            transaction.replace(R.id.container, lastFragment!!)
         transaction.commit()
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
@@ -59,21 +59,13 @@ class MainActivity : AppCompatActivity() {
         when(lastFragment)
         {
             is LightSensorViewFragment->
-            {
                 navigation.selectedItemId = R.id.navigation_home
-            }
             is AccelerometerSensorViewFragment->
-            {
                 navigation.selectedItemId = R.id.navigation_dashboard
-            }
             is GyroscopeSensorViewFragment->
-            {
                 navigation.selectedItemId = R.id.navigation_notifications
-            }
             is ConfigViewFragment->
-            {
                 navigation.selectedItemId = R.id.navigation_config
-            }
         }
     }
 }

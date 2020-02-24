@@ -19,7 +19,7 @@ class MQTT(private val c: Context, private val topic: String, clientId: String):
     }
 
     override fun connectionLost(cause: Throwable?) {
-        Log.e("mqtt_con_error", cause?.message)
+        Log.e("mqtt_con_error", cause?.message ?: "")
         Toast.makeText(c, R.string.mqtt_connection_error, Toast.LENGTH_SHORT).show()
     }
 
@@ -32,7 +32,7 @@ class MQTT(private val c: Context, private val topic: String, clientId: String):
     }
 
     override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
-        Log.e("mqtt_con_error", exception?.message)
+        Log.e("mqtt_con_error", exception?.message ?: "")
         Toast.makeText(c, R.string.mqtt_connection_error, Toast.LENGTH_SHORT).show()
     }
 

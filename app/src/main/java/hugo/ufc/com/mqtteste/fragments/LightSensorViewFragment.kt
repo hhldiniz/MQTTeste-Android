@@ -1,6 +1,5 @@
 package hugo.ufc.com.mqtteste.fragments
 
-import android.app.Fragment
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -11,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import hugo.ufc.com.mqtteste.R
 import hugo.ufc.com.mqtteste.interfaces.SensorFragment
 import hugo.ufc.com.mqtteste.utils.CommonSharedPreferences
@@ -31,16 +31,16 @@ class LightSensorViewFragment: Fragment(), SensorEventListener, SensorFragment {
     }
 
     override fun startMqtt() {
-        mqtt = MQTT(activity.applicationContext, "sensor/light", "AndroidClient")
+        mqtt = MQTT(context!!, "sensor/light", "AndroidClient")
         mqtt.setMqttClient("tcp://${prefs.getString("server")}:${prefs.getString("port")}")
         options.userName = prefs.getString("username")
-        options.password = prefs.getString("password").toCharArray()
+        options.password = prefs.getString("password")?.toCharArray()
         mqtt.connect(options)
     }
 
     override fun startClientServer() {
         val url = URL("http://${prefs.getString("server")}")
-        tcpServer = ServerConnection(url,prefs.getString("username"),prefs.getString("password"))
+        tcpServer = ServerConnection(url, prefs.getString("username") ?: "", prefs.getString("password") ?: "")
     }
 
     private lateinit var sensorManager: SensorManager
@@ -65,19 +65,19 @@ class LightSensorViewFragment: Fragment(), SensorEventListener, SensorFragment {
                     mqtt.publishMsg(msg)
                 }catch (e: UninitializedPropertyAccessException)
                 {
-                    Toast.makeText(activity.baseContext, R.string.server_loading, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.server_loading, Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater!!.inflate(R.layout.light_sensor_view_layout, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return inflater.inflate(R.layout.light_sensor_view_layout, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        prefs = CommonSharedPreferences(activity)
+        prefs = CommonSharedPreferences(context!!)
         try {
             if(prefs.getInt("connection_method") == 0)
                 startConfigs()
@@ -85,7 +85,7 @@ class LightSensorViewFragment: Fragment(), SensorEventListener, SensorFragment {
                 startMqtt()
             else
                 startClientServer()
-            sensorManager = activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            sensorManager = activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
             lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
             sensorManager.registerListener(this@LightSensorViewFragment, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
         }catch (e: IllegalStateException)
